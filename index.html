@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sagar Puppala | Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to right, #1f4037, #99f2c8);
+            color: #ffffff;
+            scroll-behavior: smooth;
+            transition: background 0.4s ease;
+        }
+
+        .header {
+            background: rgba(0, 0, 0, 0.75);
+            padding: 2rem 1rem 1rem;
+            border-bottom: 1px solid #555;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .profile-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .profile-pic,
+        .profile-info {
+            opacity: 0; /* Initial state for header elements */
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .profile-pic.visible,
+        .profile-info.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .profile-pic {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #ccc;
+            transition: transform 0.3s ease; /* Keep hover transition */
+        }
+
+        .profile-pic:hover {
+            transform: scale(1.05);
+        }
+
+        .profile-info {
+            text-align: left;
+            max-width: 600px;
+        }
+
+        .profile-info h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.4rem;
+            color: #ffffff;
+        }
+
+        .typewriter {
+            font-weight: 500;
+            font-size: 1rem;
+            color: #2ecc71;
+            border-right: 2px solid #2ecc71;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        @keyframes blink {
+            50% {
+                border-color: transparent;
+            }
+        }
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.75rem;
+            background-color: #000000e0;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #444;
+            transition: background 0.3s ease;
+            opacity: 0; /* Initial state for navbar */
+            transform: translateY(-20px);
+        }
+
+        .navbar.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .navbar a {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 15px;
+            transition: background 0.3s ease, transform 0.2s ease;
+            font-size: 0.95rem;
+        }
+
+        .navbar a:hover {
+            background-color: #2ecc71;
+            color: #000;
+            transform: scale(1.05);
+        }
+
+        main {
+            padding: 2rem 1rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            transition: padding 0.3s ease;
+        }
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+            /* Initial state for cards */
+            opacity: 0;
+            transform: translateY(30px); /* Slightly larger vertical shift for cards */
+            transition: opacity 0.7s ease-out, transform 0.7s ease-out; /* Animation for cards */
+        }
+
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            background-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .card h2 {
+            margin-bottom: 0.75rem;
+            color: #00e6ac;
+        }
+
+        .card h3 {
+            margin-top: 1rem;
+            color: #ffffff;
+        }
+
+        .card p {
+            color: #f1f1f1;
+        }
+
+        .footer {
+            background-color: #000000e0;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            border-top: 1px solid #555;
+            opacity: 0; /* Initial state for footer */
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .footer.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        ul li {
+            margin-bottom: 0.5rem;
+            opacity: 0; /* Initial state for list items */
+            transform: translateX(-10px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        ul li.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+
+        .experience-item,
+        .education-item,
+        .project-item {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+            opacity: 0; /* Initial state for item containers */
+            transform: translateY(20px);
+            transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+        }
+
+        .experience-item.visible,
+        .education-item.visible,
+        .project-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .experience-item:last-child,
+        .education-item:last-child,
+        .project-item:last-child {
+            border-bottom: none;
+        }
+
+        .project-item h3,
+        .experience-item h3 {
+            margin-bottom: 0.5rem;
+            color: #99f2c8;
+        }
+
+        .project-item p,
+        .experience-item p {
+            margin-top: 0.2rem;
+            font-size: 0.95rem;
+        }
+
+        /* Flexbox properties for dynamic skills layout */
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .skill-category {
+            background-color: #2ecc71;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 0.9rem;
+            color: #000;
+            border: 1px solid #1f4037;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out, background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Hover effect for skill categories */
+        .skill-category:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 4px 12px rgba(0, 230, 172, 0.5);
+            background-color: #00b386;
+            cursor: pointer;
+        }
+
+        .skill-category.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .certifications-list {
+            list-style: disc;
+            margin-left: 20px;
+        }
+
+        .certifications-list li {
+            margin-bottom: 0.75rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div class="profile-container">
+            <img src="https://res.cloudinary.com/dyhrn4mps/image/upload/v1748325001/WhatsApp_Image_2025-05-27_at_11.01.20_be0873e7_bik0eq.jpg" alt="Sagar Puppala" class="profile-pic" />
+            <div class="profile-info">
+                <h1>Sagar Puppala</h1>
+                <div class="typewriter" id="typewriter-text"></div>
+                <p>sagarpgbs99@gmail.com | +91 9573927579</p>
+                <p>
+                    <a href="https://linkedin.com/in/sagar-puppala-1a5721266">LinkedIn</a> |
+                    <a href="https://github.com/21p31A04l1">GitHub</a>
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <nav class="navbar">
+        <a href="#profile">Profile</a>
+        <a href="#projects">Projects</a>
+        <a href="#experience">Experience</a>
+        <a href="#education">Education</a>
+        <a href="#skills">Skills</a>
+        <a href="#certifications">Certifications</a>
+    </nav>
+
+    <main>
+        <section id="profile" class="card">
+            <h2>Professional Summary</h2>
+            <p>"Skilled web developer with a strong foundation in HTML, CSS, JavaScript, and React.js, specializing in creating
+                dynamic, responsive, and user-friendly web applications. Adept at translating client requirements into innovative
+                solutions, optimizing performance, and enhancing user experience. Committed to staying updated with the latest
+                industry trends and delivering high-quality, scalable web solutions that drive business success."</p>
+        </section>
+
+        <section id="experience" class="card">
+            <h2>Experience</h2>
+            <div class="experience-item">
+                <h3>Python Developer Intern</h3>
+                <p><strong>Technical Hub Pvt Ltd</strong> | May 2023 - July 2023</p>
+                <p>Surampalem, India</p>
+                <ul>
+                    <li>Completed a summer internship focused on Python programming, gaining expertise in OOP concepts, exception
+                        handling, file handling, and MySQL integration.</li>
+                    <li>Earned the **IT Specialist Certification for Python** while successfully developing and optimizing database-driven applications.</li>
+                    <li>Demonstrated strong problem-solving, teamwork, and time management skills, contributing to project efficiency and automation.</li>
+                </ul>
+            </div>
+            <div class="experience-item">
+                <h3>Embedded Systems Intern</h3>
+                <p><strong>SkillDzire</strong> | May 2024 - July 2024</p>
+                <p>Remote</p>
+                <ul>
+                    <li>Completed a 2-month internship in Embedded Systems organized by SkillDzire in collaboration with the Andhra
+                        Pradesh State Council of Higher Education.</li>
+                    <li>Gained hands-on experience in designing, programming, and testing embedded systems while enhancing technical skills in microcontrollers and real-time applications.</li>
+                    <li>Demonstrated problem-solving abilities and a proactive approach to learning, contributing to innovative solutions.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="education" class="card">
+            <h2>Education</h2>
+            <div class="education-item">
+                <h3>Aditya College Of Engineering and Technology</h3>
+                <p>Electronics and Communication Engineering</p>
+                <p>June 2019 - March 2023</p>
+                <p>CGPA: 7.08</p>
+            </div>
+            <div class="education-item">
+                <h3>Narayana Junior College</h3>
+                <p>Intermediate</p>
+                <p>June 2018 - March 2019</p>
+                <p>CGPA: 9.20</p>
+            </div>
+            <div class="education-item">
+                <h3>ZPP High School</h3>
+                <p>Secondary Education</p>
+                <p>CGPA: 9.70</p>
+            </div>
+        </section>
+
+        <section id="projects" class="card">
+            <h2>Projects</h2>
+            <div class="project-item">
+                <h3>Project A: Portfolio Website</h3>
+                <p>Tools: HTML, CSS, Javascript, ReactJS</p>
+                <p>October 2023</p>
+                <ul>
+                    <li>Developed a dynamic and responsive portfolio website using HTML, CSS, JavaScript, and ReactJS to showcase projects and
+                        skills.</li>
+                    <li>Designed an intuitive user interface with interactive elements and animations, ensuring a seamless user
+                        experience.</li>
+                    <li>Implemented responsive design principles for compatibility across devices and optimized performance
+                        for faster loading times.</li>
+                </ul>
+            </div>
+            <div class="project-item">
+                <h3>Project B: Email Validator</h3>
+                <p>Tools: HTML, CSS, Javascript</p>
+                <p>September 2023</p>
+                <ul>
+                    <li>Created a robust email validation tool using HTML, CSS, and JavaScript.</li>
+                    <li>Implemented client-side validation logic to check email format and provide instant feedback to users.</li>
+                    <li>Focused on a clean user interface and efficient validation process for improved user experience.</li>
+                </ul>
+            </div>
+            <div class="project-item">
+                <h3>Deep Learning Based Road Segmentation</h3>
+                <p>Tools: MATLAB</p>
+                <p>November 2023</p>
+                <ul>
+                    <li>Developed a deep learning model for road segmentation using MATLAB.</li>
+                    <li>Utilized a U-Net architecture to effectively extract both global and local features from images.</li>
+                    <li>The model is designed to produce highly accurate segmented images, crucial for autonomous driving and mapping applications.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="skills" class="card">
+            <h2>Skills</h2>
+            <div id="skills-container">
+            </div>
+        </section>
+
+        <section id="certifications" class="card">
+            <h2>Certifications</h2>
+            <ul class="certifications-list">
+                <li>Python Certified by 'Ipersion.' - April 2023</li>
+                <li>HTML,CSS Certified by 'Ipersion.' - Jan 2024</li>
+                <li>Javascript Certified by 'Ipersion.' - Jan 2024</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 Sagar Puppala | <a href="mailto:sagarpgbs99@gmail.com">Email</a> | <a href="https://github.com/21p31A04l1">GitHub</a></p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const links = document.querySelectorAll(".navbar a");
+            links.forEach(link => {
+                link.addEventListener("click", function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute("href"));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: "smooth"
+                        });
+                    }
+                });
+            });
+
+            const titles = ["Web Developer", "Frontend Developer", "Python Programmer"];
+            const textElement = document.getElementById("typewriter-text");
+            let titleIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+
+            function type() {
+                const currentTitle = titles[titleIndex];
+
+                if (!isDeleting) {
+                    charIndex++;
+                    if (charIndex > currentTitle.length) {
+                        charIndex = currentTitle.length;
+                        isDeleting = true;
+                    }
+                } else {
+                    charIndex--;
+                    if (charIndex < 0) {
+                        charIndex = 0;
+                        isDeleting = false;
+                        titleIndex = (titleIndex + 1) % titles.length;
+                    }
+                }
+
+                const visibleText = currentTitle.substring(0, charIndex);
+                textElement.textContent = visibleText;
+
+                if ((charIndex === currentTitle.length && !isDeleting) || (charIndex === 0 && isDeleting)) {
+                    textElement.style.animation = 'blink 0.75s step-end infinite';
+                } else {
+                    textElement.style.animation = 'none';
+                }
+
+                let speed = isDeleting ? 50 : 100;
+                if (charIndex === currentTitle.length && !isDeleting) {
+                    speed = 1500;
+                } else if (charIndex === 0 && isDeleting) {
+                    speed = 500;
+                }
+
+                setTimeout(type, speed);
+            }
+
+            type();
+
+            const skillsData = {
+                "Web Technologies": ["HTML", "CSS", "Javascript", "ReactJS"],
+                "Programming Languages": ["Python"],
+                "Database Systems": ["MongoDB"],
+                "Professional Skills": ["Communication Skills", "Teamwork", "Leadership", "Time Management", "Work Ethic", "Critical Thinking", "Problem-Solving"]
+            };
+
+            const skillsContainer = document.getElementById("skills-container");
+
+            for (const category in skillsData) {
+                if (skillsData.hasOwnProperty(category)) {
+                    const categoryHeading = document.createElement("h3");
+                    categoryHeading.textContent = category + ":";
+                    skillsContainer.appendChild(categoryHeading);
+
+                    const skillsListDiv = document.createElement("div");
+                    skillsListDiv.classList.add("skills-list");
+
+                    skillsData[category].forEach(skill => {
+                        const skillSpan = document.createElement("span");
+                        skillSpan.classList.add("skill-category");
+                        skillSpan.textContent = skill;
+                        skillsListDiv.appendChild(skillSpan);
+                    });
+                    skillsContainer.appendChild(skillsListDiv);
+                }
+            }
+
+            // Intersection Observer for animating skills on scroll (existing)
+            const skillObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const skillSpans = entry.target.querySelectorAll('.skill-category');
+                        skillSpans.forEach((span, index) => {
+                            setTimeout(() => {
+                                span.classList.add('visible');
+                            }, index * 100);
+                        });
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.2
+            });
+            skillObserver.observe(skillsContainer);
+
+
+            // Intersection Observer for animating cards and footer on scroll
+            const cardObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        // Animate list items within the card if present
+                        const listItems = entry.target.querySelectorAll('ul li');
+                        listItems.forEach((item, index) => {
+                            setTimeout(() => {
+                                item.classList.add('visible');
+                            }, index * 150); // Staggered delay for list items
+                        });
+
+                        // Animate experience/education/project items within the card if present
+                        const itemContainers = entry.target.querySelectorAll('.experience-item, .education-item, .project-item');
+                        itemContainers.forEach((item, index) => {
+                            setTimeout(() => {
+                                item.classList.add('visible');
+                            }, index * 100); // Staggered delay for item containers
+                        });
+
+                        observer.unobserve(entry.target); // Stop observing once animated
+                    }
+                });
+            }, {
+                threshold: 0.15 // Trigger when 15% of the element is visible
+            });
+
+            // Observe all card elements
+            document.querySelectorAll('.card').forEach(card => {
+                cardObserver.observe(card);
+            });
+
+            // Observe the footer
+            cardObserver.observe(document.querySelector('.footer'));
+
+
+            // Initial animation for header elements
+            const profilePic = document.querySelector('.profile-pic');
+            const profileInfo = document.querySelector('.profile-info');
+            const navbar = document.querySelector('.navbar');
+
+            setTimeout(() => {
+                profilePic.classList.add('visible');
+            }, 200); // Slight delay for profile pic
+
+            setTimeout(() => {
+                profileInfo.classList.add('visible');
+            }, 400); // Slight delay for profile info
+
+            setTimeout(() => {
+                navbar.classList.add('visible');
+            }, 600); // Delay for navbar
+        });
+    </script>
+</body>
+
+</html>
+
